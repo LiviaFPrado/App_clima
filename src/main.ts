@@ -2,7 +2,7 @@ import "./styles.css";
 import { debounce } from "./utils/debounce";
 import { isValidCity, normalizeCity, MAX_CITIES } from "./utils/validators";
 import { searchCityByName } from "./api/geocoding";
-import { getCurrentWeather, WeatherNow } from "./api/weather";
+import { getCurrentWeather, type WeatherNow } from "./api/weather";
 import { WeatherCard } from "./components/WeatherCard";
 import type { City } from "./types";
 
