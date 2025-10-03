@@ -1,5 +1,5 @@
-/* Paleta em tons de cinza clarinho */
 :root {
+  /* Base light gray */
   --bg: #f6f7f9;            /* fundo da página */
   --surface: #ffffff;       /* cartões e listas */
   --surface-muted: #f9fafb; /* áreas suaves (inputs, hover leve) */
@@ -7,14 +7,24 @@
   --text-muted: #6b7280;    /* cinza-500 */
   --border: #e5e7eb;        /* cinza-200 */
   --border-strong: #d1d5db; /* cinza-300 */
-  --focus: #9ca3af;         /* cinza-400 (anel de foco) */
+
+  /* Tons de verde musgo (accents) */
+  --moss-50:  #f1f6f2;
+  --moss-100: #e4eee6;
+  --moss-200: #c8ddcd;
+  --moss-300: #a6c7ae;
+  --moss-400: #85af8f;
+  --moss-500: #6a9776; /* principal */
+  --moss-600: #557a5f;
+  --moss-700: #445f4c;
+
+  /* Acento padrão usado em foco/realces */
+  --accent: var(--moss-500);
 }
 
 * { box-sizing: border-box; }
 
-html, body {
-  height: 100%;
-}
+html, body { height: 100%; }
 
 body {
   margin: 0;
@@ -38,7 +48,10 @@ p, small { color: var(--text-muted); }
   margin-top: 10px;
 }
 
-/* Search */
+/* ===============================
+   Busca (input + sugestões)
+   =============================== */
+
 .search { position: relative; max-width: 560px; }
 
 input {
@@ -55,8 +68,8 @@ input {
 input::placeholder { color: var(--text-muted); }
 
 input:focus {
-  border-color: var(--border-strong);
-  box-shadow: 0 0 0 3px color-mix(in oklab, var(--focus) 35%, transparent);
+  border-color: var(--moss-300);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent) 35%, transparent);
   background: var(--surface);
 }
 
@@ -78,21 +91,29 @@ ul#suggestions {
   cursor: pointer;
   color: var(--text);
   border-bottom: 1px solid var(--border);
+  transition: background .15s ease, border-color .15s ease, padding-left .15s ease;
 }
 
 #suggestions li:last-child { border-bottom: 0; }
 
 #suggestions li:hover {
-  background: var(--surface-muted);
+  background: var(--moss-50);
+  border-left: 3px solid var(--moss-300);
+  padding-left: 9px; /* compensa a borda à esquerda */
 }
 
 #suggestions .warning {
   color: var(--text-muted);
   cursor: default;
   background: var(--surface);
+  border-left: 0;
+  padding-left: 12px;
 }
 
-/* Chips das cidades */
+/* ===============================
+   Chips (cidades selecionadas)
+   =============================== */
+
 .chips {
   display: flex;
   flex-wrap: wrap;
@@ -109,6 +130,12 @@ ul#suggestions {
   display: inline-flex;
   align-items: center;
   gap: 6px;
+  transition: background .15s ease, border-color .15s ease;
+}
+
+.chip:hover {
+  background: var(--moss-50);
+  border-color: var(--moss-300);
 }
 
 .chip .x {
@@ -119,26 +146,39 @@ ul#suggestions {
   cursor: pointer;
   border-radius: 6px;
   padding: 0 6px;
+  transition: background .15s ease, color .15s ease;
 }
 
 .chip .x:hover {
-  background: var(--border);
-  color: var(--text);
+  background: var(--moss-50);
+  color: var(--moss-700);
 }
 
-/* Grid de cards */
+/* ===============================
+   Grid de cards
+   =============================== */
+
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 14px;
 }
 
-/* Card */
+/* ===============================
+   Card de clima
+   =============================== */
+
 .card {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 14px;
   box-shadow: 0 1px 2px rgba(0,0,0,.03);
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+
+.card:hover {
+  border-color: var(--moss-200);
+  box-shadow: 0 2px 6px rgba(68, 95, 76, .08); /* sombra sutil verdinha */
 }
 
 .card-header {
@@ -170,15 +210,16 @@ ul#suggestions {
   border-radius: 8px;
   padding: 6px 10px;
   cursor: pointer;
-  transition: background .15s ease, border-color .15s ease;
+  transition: background .15s ease, border-color .15s ease, color .15s ease, box-shadow .15s ease;
 }
 
 .remove:hover {
-  background: var(--bg);
-  border-color: var(--border-strong);
+  background: var(--moss-50);
+  border-color: var(--moss-300);
+  color: var(--moss-700);
 }
 
 .remove:focus {
   outline: none;
-  box-shadow: 0 0 0 3px color-mix(in oklab, var(--focus) 35%, transparent);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent) 35%, transparent);
 }
