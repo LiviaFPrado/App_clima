@@ -1,20 +1,225 @@
-:root { font-family: Inter, system-ui, Arial; }
-body { margin: 0; padding: 24px; background:#0b1020; color:#eef1f5; }
-h1 { margin: 8px 0 12px; }
+:root {
+  /* Base light gray */
+  --bg: #f6f7f9;            /* fundo da página */
+  --surface: #ffffff;       /* cartões e listas */
+  --surface-muted: #f9fafb; /* áreas suaves (inputs, hover leve) */
+  --text: #1f2937;          /* cinza-800 */
+  --text-muted: #6b7280;    /* cinza-500 */
+  --border: #e5e7eb;        /* cinza-200 */
+  --border-strong: #d1d5db; /* cinza-300 */
+
+  /* Tons de verde musgo (accents) */
+  --moss-50:  #f1f6f2;
+  --moss-100: #e4eee6;
+  --moss-200: #c8ddcd;
+  --moss-300: #a6c7ae;
+  --moss-400: #85af8f;
+  --moss-500: #6a9776; /* principal */
+  --moss-600: #557a5f;
+  --moss-700: #445f4c;
+
+  /* Acento padrão usado em foco/realces */
+  --accent: var(--moss-500);
+}
+
+* { box-sizing: border-box; }
+
+html, body { height: 100%; }
+
+body {
+  margin: 0;
+  padding: 24px;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  line-height: 1.45;
+}
+
+h1 {
+  margin: 8px 0 12px;
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+
+p, small { color: var(--text-muted); }
+
+.hint {
+  display: block;
+  margin-top: 10px;
+}
+
+/* ===============================
+   Busca (input + sugestões)
+   =============================== */
+
 .search { position: relative; max-width: 560px; }
-input { width: 100%; padding: 12px 14px; border-radius: 10px; border: 1px solid #3a4361; background:#141b33; color:#eef1f5; }
-ul#suggestions { position:absolute; inset-inline:0; top:48px; list-style:none; padding:0; margin:8px 0 0; background:#141b33; border:1px solid #3a4361; border-radius: 10px; max-height: 240px; overflow:auto; }
-#suggestions li { padding: 10px 12px; cursor:pointer; }
-#suggestions li:hover { background:#1b2547; }
-#suggestions .warning { color:#f6c177; cursor:default; }
-.chips { display:flex; flex-wrap:wrap; gap:8px; margin:14px 0; }
-.chip { background:#1b2547; border:1px solid #3a4361; padding:6px 8px; border-radius:999px; }
-.chip .x { margin-left:8px; background:transparent; border:0; color:#aab3d0; cursor:pointer; }
-.grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:14px; }
-.card { background:#141b33; border:1px solid #3a4361; border-radius:14px; }
-.card-header { display:flex; justify-content:space-between; align-items:center; padding:10px 12px; border-bottom:1px solid #3a4361; }
-.card-body { padding:12px; }
-.metric { display:flex; justify-content:space-between; margin:6px 0; }
-.remove { background:#2a3358; border:1px solid #3a4361; color:#eef1f5; border-radius:8px; padding:6px 10px; cursor:pointer; }
-.remove:hover { background:#36406a; }
-.hint { display:block; margin-top:10px; color:#aab3d0; }
+
+input {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  outline: none;
+  transition: border-color .15s ease, box-shadow .15s ease, background .15s ease;
+}
+
+input::placeholder { color: var(--text-muted); }
+
+input:focus {
+  border-color: var(--moss-300);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent) 35%, transparent);
+  background: var(--surface);
+}
+
+ul#suggestions {
+  position: absolute;
+  left: 0; right: 0; top: 48px;
+  list-style: none;
+  padding: 0;
+  margin: 8px 0 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  max-height: 240px;
+  overflow: auto;
+}
+
+#suggestions li {
+  padding: 10px 12px;
+  cursor: pointer;
+  color: var(--text);
+  border-bottom: 1px solid var(--border);
+  transition: background .15s ease, border-color .15s ease, padding-left .15s ease;
+}
+
+#suggestions li:last-child { border-bottom: 0; }
+
+#suggestions li:hover {
+  background: var(--moss-50);
+  border-left: 3px solid var(--moss-300);
+  padding-left: 9px; /* compensa a borda à esquerda */
+}
+
+#suggestions .warning {
+  color: var(--text-muted);
+  cursor: default;
+  background: var(--surface);
+  border-left: 0;
+  padding-left: 12px;
+}
+
+/* ===============================
+   Chips (cidades selecionadas)
+   =============================== */
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 14px 0;
+}
+
+.chip {
+  background: var(--surface-muted);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 6px 8px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: background .15s ease, border-color .15s ease;
+}
+
+.chip:hover {
+  background: var(--moss-50);
+  border-color: var(--moss-300);
+}
+
+.chip .x {
+  margin-left: 2px;
+  background: transparent;
+  border: 0;
+  color: var(--text-muted);
+  cursor: pointer;
+  border-radius: 6px;
+  padding: 0 6px;
+  transition: background .15s ease, color .15s ease;
+}
+
+.chip .x:hover {
+  background: var(--moss-50);
+  color: var(--moss-700);
+}
+
+/* ===============================
+   Grid de cards
+   =============================== */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+}
+
+/* ===============================
+   Card de clima
+   =============================== */
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: 0 1px 2px rgba(0,0,0,.03);
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+
+.card:hover {
+  border-color: var(--moss-200);
+  box-shadow: 0 2px 6px rgba(68, 95, 76, .08); /* sombra sutil verdinha */
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.card-header strong { color: var(--text); }
+
+.card-body { padding: 12px; }
+
+.metric {
+  display: flex;
+  justify-content: space-between;
+  margin: 6px 0;
+  color: var(--text);
+}
+
+.metric span { color: var(--text-muted); }
+
+/* Botão remover no card */
+.remove {
+  background: var(--surface-muted);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 8px;
+  padding: 6px 10px;
+  cursor: pointer;
+  transition: background .15s ease, border-color .15s ease, color .15s ease, box-shadow .15s ease;
+}
+
+.remove:hover {
+  background: var(--moss-50);
+  border-color: var(--moss-300);
+  color: var(--moss-700);
+}
+
+.remove:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent) 35%, transparent);
+}
