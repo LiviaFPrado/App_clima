@@ -1,6 +1,6 @@
 // WeatherCard.ts
 // Card simples para exibir dados atuais de uma cidade (stateless).
-import { WeatherNow, codeToLabel } from "../api/weather";
+import { type WeatherNow, codeToLabel } from "../api/weather";
 
 interface Props {
   cityLabel: string;           // "São Paulo, Brasil"
